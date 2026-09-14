@@ -295,7 +295,17 @@ class CornersProblem(search.SearchProblem):
         Returns the start state (in your state space, not the full Pacman state
         space)
         """
-        return self.startingPosition, (False, False, False, False)  # returns position and corners visited as a tuple of booleans
+        # check if pacman starts on a corner
+        startcond = (False, False, False, False)
+        for i in range(len(self.corners)):
+            goal = self.corners[i]
+            if self.startingPosition == goal:
+                index = self.corners.index(goal)
+                startcond = list(startcond)
+                startcond[index] = True
+                startcond = tuple(startcond)
+        
+        return self.startingPosition, startcond  # returns position and corners visited as a tuple of booleans
 
     def isGoalState(self, state: Any):
         """
